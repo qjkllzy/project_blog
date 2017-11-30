@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block l_body %}
+    <div class="wendang">
+        <h3>{{ date }}文章归档</h3>
+        {% for l in last_list %}
+            <div class="wendangxq"><a href="{% url 'article_xq' %}?title={{ l.title }}">{{ l.title }}</a></div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block l_body %}
+    <h3 style="position: absolute;top:10px;">{{ category }}</h3>
+    <hr style="margin-top: 80px;color:beige">
+    <div class="hot_article">
+    {% for article in last_list %}
+    <div class="hot_list" >
+        <a href="/">{{ article.title }}</a>
+        <span >评论（{{ article.count_comment }}）
+        </span>
+    </div>
+    {% endfor %}
+</div>
+    {% include 'page.html' %}
+{% endblock %}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+{#<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN">#}
+<html lang="en">
+<head>
+    {% load staticfiles %}
+    <meta charset="UTF-8">
+    <title>个人博客</title>
+    <link rel="stylesheet" href="{%static 'css/myblog.css'%}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.2.1.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/sliders.js' %}"></script>
+    {% block headfile %}{% endblock %}
+    <script>
+        $(function () {
+           $("#LL").mouseover(function () {
+                $("#PL").css({'background':'white','color':'black'});
+                $("#TJ").css({'background':'white','color':'black'});
+                $("#LL").css({'background':'orange','color':'white'});
+                $(".wen_p,.wen_t").css('display','none');
+                $(".wen").css('display','block')
+           })
+            $("#PL").mouseover(function () {
+                $("#LL").css({'background':'white','color':'black'});
+                $("#TJ").css({'background':'white','color':'black'});
+                $("#PL").css({'background':'orange','color':'white'});
+                $(".wen_p").css('display','block')
+                $(".wen,.wen_t").css('display','none');
+           })
+             $("#TJ").mouseover(function () {
+                $("#LL").css({'background':'white','color':'black'});
+                $("#PL").css({'background':'white','color':'black'});
+                $("#TJ").css({'background':'orange','color':'white'});
+                $(".wen_t").css('display','block')
+                $(".wen,.wen_p").css('display','none');
+           })
+        })
+    </script>
+{#    <script type="text/javascript" src="{% static 'js/nav.js' %}"></script>#}
+</head>
+<body>
+<div class="b_div">
+    <h2>XX的个人博客</h2>
+    <p class="desc">一个没落的博客,一些过去的故事，一段落寞的人生，</p>
+    {% if not request.user.is_authenticated %}
+    <a href="{% url 'denglu' %}" class="denglu">登录</a> <a href="{% url 'zhuce' %}" class="zhuce">注册</a>
+    {% endif %}
+    {% if request.user.is_authenticated %}
+        <p class="yidenglu">欢迎你 !{{ request.user.username }}</p>
+        <a href="{% url 'zhuxiao' %}" class="zhuxiao">注销</a>
+    {% endif %}
+    <nav id="topnav" >
+        <a href="/">首页</a>
+        {% for cate in Cate_list %}
+            <a href="{% url 'category' %}?cid={{ cate.id }}">{{ cate.name }}</a>
+        {% endfor %}
+    </nav>
+    <div class="l_body">{% block l_body %}{% endblock %}</div>
+    <div class="r_body">
+        <h3 >关注我</h3>
+        <hr style="margin-top: -10px;color:beige">
+        <div class="callme">
+            <ul>
+                <li><a href="/"><img src="{% static 'img/sina.jpg' %}"></a><label>新浪微博</label></li>
+                <li><a href="/"><img src="{% static 'img/tencent.jpg' %}" ></a><label>腾讯微博</label></li>
+                <li><a href="/"><img src="{% static 'img/rss.jpg' %}"></a><label>RSS</label></li>
+                <li><a href="/"><img src="{% static 'img/email.jpg' %}"></a><label>邮箱</label></li>
+            </ul>
+        </div>
+        <nav class="r_nav">
+            <span id="LL">浏览排行</span>
+            <span id="PL">评论排行</span>
+            <span id="TJ">站长排荐</span>
+        </nav>
+
+        <div class="wen">
+                <ol>
+                {% for l in LLlist  %}
+                <li><a href="{% url 'article_xq' %}?title={{ l.title }}">{{ l.title }}</a></li>
+                {% endfor %}
+                </ol>
+        </div>
+        <div class="wen_p">
+                <ol>
+                {% for l in article_PLlist  %}
+                <li><a href="{% url 'article_xq' %}?title={{ l.title }}">{{ l.title }}</a></li>
+                {% endfor %}
+                </ol>
+        </div>
+        <div class="wen_t">
+                <ol>
+                {% for l in TJlist  %}
+                <li><a href="{% url 'article_xq' %}?title={{ l.title }}">{{ l.title }}</a></li>
+                {% endfor %}
+                </ol>
+        </div>
+        <label class="labyun">标签云</label>
+        <hr style="margin-top: 300px;color:beige">
+        <div class="cloud">
+              <ul>
+                <li><a href="/">个人博客</a></li>
+                <li><a href="/">web开发</a></li>
+                <li><a href="/">前端设计</a></li>
+                <li><a href="/">Html</a></li>
+                <li><a href="/">Html5+css3</a></li>
+                <li><a href="/">百度</a></li>
+                <li><a href="/">Javasript</a></li>
+                <li><a href="/">web开发</a></li>
+                <li><a href="/">前端设计</a></li>
+                <li><a href="/">Html</a></li>
+                <li><a href="/">CSS3</a></li>
+                <li><a href="/">Html5+css3</a></li>
+              </ul>
+         </div>
+        <h3>文章归档</h3>
+        <hr style="margin-top: -10px;color: beige">
+        <div class="guidang">
+            <ul>
+                {% for re in result_date_list %}
+                    <li><a href="{% url 'wendang'%}?date={{ re }}">{{ re }}文章存档</a></li>
+                {% endfor %}
+            </ul>
+        </div>
+        <lable>友情链接</lable>
+        <div class="lianj">
+            <ul>
+                <li><a href="/">前端设计</a></li>
+                <li><a href="/">Html</a></li>
+                <li><a href="/">Html5+css3</a></li>
+                <li><a href="/">百度</a></li>
+                <li><a href="/">Javasript</a></li>
+                <li><a href="/">web开发</a></li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+      <p >XX的个人博客 蜀ICP备xxxxxxx号-1</p>
+    </footer>
+</div>
+</body>
+</html>

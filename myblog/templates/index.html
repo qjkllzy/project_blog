@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block l_body %}
+<div class="banner">
+      <div id="slide-holder">
+        <div id="slide-runner">
+            <a href="/" target="_blank"><img id="slide-img-1" src="{% static 'img/ad1.jpg' %}"  alt="" /></a>
+            <a href="/" target="_blank"><img id="slide-img-2" src="{% static 'img/ad2.png' %}"  alt="" /></a>
+            <a href="/" target="_blank"><img id="slide-img-3" src="{% static 'img/ad3.jpg' %}"  alt="" /></a>
+            <a href="/" target="_blank"><img id="slide-img-4" src="{% static 'img/ad4.png' %}"  alt="" /></a>
+          <div id="slide-controls">
+            <p id="slide-client" class="text"></p>
+            <p id="slide-desc" class="text"></p>
+            <p id="slide-nav"></p>
+          </div>
+        </div>
+      </div>
+      <script>
+            if(!window.slider) {
+            var slider={};
+          }
+
+          slider.data= [
+            {
+                "id":"slide-img-1", // 与slide-runner中的img标签id对应
+                "client":"标题1",
+                "desc":"这里修改描述 这里修改描述 这里修改描述" //这里修改描述
+            },
+            {
+                "id":"slide-img-2",
+                "client":"标题2",
+                "desc":"add your description here"
+            },
+            {
+                "id":"slide-img-3",
+                "client":"标题3",
+                "desc":"add your description here"
+            },
+            {
+                "id":"slide-img-4",
+                "client":"标题4",
+                "desc":"add your description here"
+            }
+          ];
+
+      </script>
+</div>
+    <h3 style="position: absolute;top:400px;">最新文章</h3>
+    <hr style="margin-top: 80px;color:beige">
+<div class="hot_article">
+    {% for article in newest_list %}
+    <div class="hot_list" >
+        <a href="{% url 'article_xq' %}?title={{ article.title }}">{{ article.title }}</a>
+        <span >评论（{{ article.count_comment }}）
+        </span>
+    </div>
+    {% endfor %}
+</div>
+    {% include 'page.html' %}
+{% endblock %}

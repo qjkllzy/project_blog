@@ -1,0 +1,70 @@
+
+{% extends 'base.html' %}
+
+{% block l_body %}
+    {% for art in article %}
+    <div class="xq"><h3>{{ art.title }}</h3><br>{{ art.content }}</div>
+    {% endfor %}
+    <hr style="color:beige">
+    {% load dtime %}
+    <div class="comment">
+    <ol>
+    {% for com in comment_list %}
+        <li>
+            <span style="color:#4D4949">{{ com.content }}<br></span>
+            <span class="aandd">{{ com.username }} {{ com.date_publish|dtime }}<span class="answer_span" onclick="answer({{ com.id }})">回复></span>
+            <div class="answer" id="a{{ com.id }}" >
+            <form action="{% url 'answer_comment' %}" method="post">{% csrf_token %}
+                <textarea name="answer" id="answer_text" ></textarea>
+                <input type="submit" value="提交" style="float: right">
+                <input type="hidden" name="answer_id" value="{{ com.id }}">
+                {% for art in article %}
+                    <input type="hidden" name="art_id" value="{{ art.id }}">
+                {% endfor %}
+            </form>
+            </div>
+            </span>
+            <hr style="color: beige;margin-top: 21px;width: 100%">
+            {% for child in com.children_comment %}
+                <span class="child_content">{{ child.content }}<br></span>
+                <span class="child_aandd">{{ child.username }} {{ child.date_publish|dtime }}</span>
+                <hr style="color: beige;margin-top: 50px;width: 645px;margin-right: 0">
+            {% endfor %}
+        </li>
+    {% endfor %}
+    </ol>
+
+         <button class="write_com">写评论</button>
+         <div class="w_com_div">
+             <form action="{% url 'write_comment' %}" method="post">
+                 {% csrf_token %}
+                 <textarea class="comment_text" name="comment_text"></textarea>
+                 {% for art in article %}
+                 <input type="hidden" name="art_id" value="{{ art.id }}">
+                 {% endfor %}
+                 <input type="submit" class="comment_submit" value="提交">
+             </form>
+         </div>
+    </div>
+    <script>
+        $(function () {
+            $(".write_com").click(function () {
+                $.ajax({
+                    url:'/write_comment/',
+                    type:'get',
+                    success:function(data){
+                        if(data=='true'){
+                            $(".w_com_div").css('display','block')
+                        }else {
+                             alert('请先登录')
+                        }
+                    }
+
+                })
+                            })
+        })
+    function answer(id) {
+         $("#a"+id).css('display','block')
+    }
+    </script>
+{% endblock %}
